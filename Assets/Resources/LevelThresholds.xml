@@ -1,0 +1,27 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<Levels>
+	<Level id="1" xp="0" />
+	<Level id="2" xp="100" />
+	<Level id="3" xp="300" />
+	<Level id="4" xp="600" />
+	<Level id="5" xp="1000" />
+	<Level id="6" xp="1500" />
+	<Level id="7" xp="2100" />
+	<Level id="8" xp="2800" />
+	<Level id="9" xp="3600" />
+	<Level id="10" xp="4500" />
+	<Level id="11" xp="5500" />
+	<Level id="12" xp="6600" />
+	<Level id="13" xp="7800" />
+	<Level id="14" xp="9100" />
+	<Level id="15" xp="10500" />
+	<Level id="16" xp="12000" />
+	<Level id="17" xp="13600" />
+	<Level id="18" xp="15300" />
+	<Level id="19" xp="17100" />
+	<Level id="20" xp="19000" />
+	<Level id="21" xp="21000" />
+	<Level id="22" xp="23100" />
+	<Level id="23" xp="25300" />
+	<Level id="24" xp="27600" />
+</Levels>
