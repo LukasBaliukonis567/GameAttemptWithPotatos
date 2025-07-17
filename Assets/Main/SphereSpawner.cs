@@ -21,11 +21,6 @@ public class SphereSpawner : MonoBehaviour
     {
         Rigidbody2D rigidbody2D = GetComponent<Rigidbody2D>();
         rigidbody2D.gravityScale = 0;
-
-        if(SphereSpawnCount == 0)
-            StartCoroutine(SpawnSpheres());
-        else
-            StartCoroutine(SpawnSpheresWithCount((int)SphereSpawnCount));
     }
 
     // Update is called once per frame
@@ -34,19 +29,21 @@ public class SphereSpawner : MonoBehaviour
 
     }
 
-    IEnumerator SpawnSpheres()
+    public IEnumerator SpawnSpheres()
     {
         yield return new WaitForSeconds(SpawnInterval);
-        Instantiate(SpherePrefab, GetRandomPosition(), Quaternion.identity);
+        Instantiate(SpherePrefab, GetRandomPositionNearDeath(), Quaternion.identity);
     }
 
-    IEnumerator SpawnSpheresWithCount(int count)
+    public void SpawnSpheresWithCount(int count)
     {
         for (int i = 0; i < count; i++)
         {
-            Instantiate(SpherePrefab, GetRandomPosition(), Quaternion.identity);
-            yield return new WaitForSeconds(SpawnInterval);
+            Instantiate(SpherePrefab, GetRandomPositionNearDeath(), Quaternion.identity);
+
+            //yield return new WaitForSeconds(SpawnInterval); // only spawn the amount once
         }
+        Destroy(gameObject); // clean up the spawner
     }
 
 
@@ -68,7 +65,6 @@ public class SphereSpawner : MonoBehaviour
     {
         float x = UnityEngine.Random.Range(_deathPosition.x - MIN_BOUNDS_ALT, _deathPosition.x + MAX_BOUNDS_ALT);
         float y = UnityEngine.Random.Range(_deathPosition.y - MIN_BOUNDS_ALT, _deathPosition.y - MAX_BOUNDS_ALT);
-        _deathPosition = new Vector2(x, y); // Assuming death position is at the origin
 
         if (bEnableTestingOutput)
         {
@@ -77,5 +73,21 @@ public class SphereSpawner : MonoBehaviour
         }
 
         return new Vector2(x, y);
+    }
+
+    public void SetDeathPoisiton(Vector2 pos)
+    {
+        _deathPosition = pos;
+    }
+
+    public void BeginSpawning()
+    {
+        Rigidbody2D rigidbody2D = GetComponent<Rigidbody2D>();
+        rigidbody2D.gravityScale = 0;
+
+        if (SphereSpawnCount == 0)
+            StartCoroutine(SpawnSpheres());
+        else
+            SpawnSpheresWithCount((int)SphereSpawnCount);
     }
 }

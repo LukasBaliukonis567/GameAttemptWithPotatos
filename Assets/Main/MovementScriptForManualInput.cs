@@ -4,7 +4,6 @@ using System.Collections.Generic;
 
 public class MovementScript : MonoBehaviour
 {
-    public const float movementSpeed = 5.0f;
     public const float diagononalSpeed = 3.5f;
     private float pointsPickedUp = 0.0f;
     private int currentLevel = 0;
@@ -22,6 +21,7 @@ public class MovementScript : MonoBehaviour
     {
         Rigidbody2D rigidbody2D = GetComponent<Rigidbody2D>();
         BoxCollider2D boxCollider2D = GetComponent<BoxCollider2D>();
+        CharacterStatsScript PlayerStats = GetComponent<CharacterStatsScript>();
 
 
 
@@ -44,19 +44,19 @@ public class MovementScript : MonoBehaviour
 
         if (Input.GetKey(KeyCode.W))
         {
-            rigidbody2D.position += Vector2.up * Time.deltaTime * movementSpeed;
+            rigidbody2D.position += Vector2.up * Time.deltaTime * PlayerStats.speed;
         }
         else if (Input.GetKey(KeyCode.S))
         {
-            rigidbody2D.position += Vector2.down * Time.deltaTime * movementSpeed;
+            rigidbody2D.position += Vector2.down * Time.deltaTime * PlayerStats.speed;
         }
         else if (Input.GetKey(KeyCode.A))
         {
-            rigidbody2D.position += Vector2.left * Time.deltaTime * movementSpeed;
+            rigidbody2D.position += Vector2.left * Time.deltaTime * PlayerStats.speed;
         }
         else if (Input.GetKey(KeyCode.D))
         {
-            rigidbody2D.position += Vector2.right * Time.deltaTime * movementSpeed;
+            rigidbody2D.position += Vector2.right * Time.deltaTime * PlayerStats.speed;
         }
 
     }
@@ -81,7 +81,17 @@ public class MovementScript : MonoBehaviour
             Destroy(other.gameObject);
             Debug.Log($"Total points picked up: {pointsPickedUp}");
         }
+
+        BadGuyLogic Opponent = other.GetComponent<BadGuyLogic>();
+        if(Opponent != null)
+        {
+            CharacterStatsScript OpponenetStats = Opponent.GetComponent<CharacterStatsScript>();
+            CharacterStatsScript PlayerStats = GetComponent<CharacterStatsScript>();
+            OpponenetStats.TakeDamage(PlayerStats.damage); // Player deals damage
+        }
+
     }
+
 
 
 }
