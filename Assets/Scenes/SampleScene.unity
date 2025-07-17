@@ -132,6 +132,7 @@ GameObject:
   - component: {fileID: 156218543}
   - component: {fileID: 156218542}
   - component: {fileID: 156218546}
+  - component: {fileID: 156218547}
   m_Layer: 0
   m_Name: TemporaryPlayerCharacter
   m_TagString: Untagged
@@ -294,6 +295,19 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.5, y: 1.5}
   m_EdgeRadius: 0
+--- !u!114 &156218547
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 156218541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ea2e8737acfb67748b653bc50037049f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  xpThresholds: 
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -685,6 +699,9 @@ MonoBehaviour:
   MAX_BOUNDS: 10
   MIN_BOUNDS: -10
   SphereSpawnCount: 0
+  XPValue: 100
+  MAX_BOUNDS_ALT: 2
+  MIN_BOUNDS_ALT: -2
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

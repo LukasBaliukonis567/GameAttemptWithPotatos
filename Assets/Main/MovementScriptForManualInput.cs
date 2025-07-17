@@ -7,6 +7,8 @@ public class MovementScript : MonoBehaviour
     public const float movementSpeed = 5.0f;
     public const float diagononalSpeed = 3.5f;
     private float pointsPickedUp = 0.0f;
+    private int currentLevel = 0;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -67,8 +69,19 @@ public class MovementScript : MonoBehaviour
         {
             pointsPickedUp += sphere.XPValue;
             Debug.Log($"Trigger overlap! XP: {sphere.XPValue}");
+
+            int nextLevelXP = LevelAndXPManagerScript.Instance.GetXPForNextLevelThreshold(currentLevel);
+
+            if (pointsPickedUp >= nextLevelXP)
+            {
+                currentLevel++;
+                Debug.Log($"Level up! New level: {currentLevel}");
+            }
+
             Destroy(other.gameObject);
             Debug.Log($"Total points picked up: {pointsPickedUp}");
         }
     }
+
+
 }
