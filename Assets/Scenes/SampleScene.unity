@@ -133,6 +133,7 @@ GameObject:
   - component: {fileID: 156218542}
   - component: {fileID: 156218546}
   - component: {fileID: 156218547}
+  - component: {fileID: 156218548}
   m_Layer: 0
   m_Name: TemporaryPlayerCharacter
   m_TagString: Player
@@ -308,6 +309,30 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   xpThresholds: 
+--- !u!114 &156218548
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 156218541}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa4c1a8e521abfc4e82c5c7785dea696, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 400
+  coins: 0
+  damage: 5000
+  speed: 5
+  attackRange: 1.5
+  attackCooldown: 1
+  armor: 0
+  invulnerabilityDuration: 1.2
+  XPValue: 10
+  XPPerKill: 2
+  XPSpawnerPrefab: {fileID: 0}
+  bDropXPOnDeath: 0
 --- !u!1 &519420028
 GameObject:
   m_ObjectHideFlags: 0
@@ -541,6 +566,7 @@ GameObject:
   - component: {fileID: 839750511}
   - component: {fileID: 839750510}
   - component: {fileID: 839750513}
+  - component: {fileID: 839750514}
   m_Layer: 0
   m_Name: BadGuy
   m_TagString: Untagged
@@ -561,7 +587,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 156218545}
-  speed: 4
 --- !u!212 &839750511
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -683,6 +708,30 @@ PolygonCollider2D:
       - {x: -0.0022947993, y: -0.28932944}
       - {x: 0.4995882, y: -0.28828463}
   m_UseDelaunayMesh: 0
+--- !u!114 &839750514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 839750509}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: aa4c1a8e521abfc4e82c5c7785dea696, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  health: 100
+  coins: 0
+  damage: 1
+  speed: 4
+  attackRange: 1.5
+  attackCooldown: 1
+  armor: 0
+  invulnerabilityDuration: 1.2
+  XPValue: 10
+  XPPerKill: 2
+  XPSpawnerPrefab: {fileID: 963782446}
+  bDropXPOnDeath: 1
 --- !u!1 &963782446
 GameObject:
   m_ObjectHideFlags: 0
@@ -830,7 +879,7 @@ Transform:
   m_GameObject: {fileID: 963782446}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 3.34, y: 1, z: 0}
+  m_LocalPosition: {x: 36.6, y: 12.96, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -850,12 +899,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   SpawnInterval: 5
   SpherePrefab: {fileID: 963782446}
-  MAX_BOUNDS: 10
-  MIN_BOUNDS: -10
+  MAX_BOUNDS: 5
+  MIN_BOUNDS: -5
   SphereSpawnCount: 0
-  XPValue: 100
-  MAX_BOUNDS_ALT: 2
-  MIN_BOUNDS_ALT: -2
+  XPValue: 10
+  MAX_BOUNDS_ALT: 0.5
+  MIN_BOUNDS_ALT: -0.5
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
