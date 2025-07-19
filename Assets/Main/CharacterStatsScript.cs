@@ -76,4 +76,14 @@ public class CharacterStatsScript : MonoBehaviour
     {
         return health <= 0.0f;
     }
+
+    public void TryDealContactDamage(GameObject other)
+    {
+        CharacterStatsScript targetStats = other.GetComponent<CharacterStatsScript>();
+        if (targetStats == null || targetStats == this) return;
+
+        // Deal damage to the other entity
+        targetStats.TakeDamage(this.damage);
+        Debug.Log($"{gameObject.name} dealt {damage} contact damage to {other.name}");
+    }
 }

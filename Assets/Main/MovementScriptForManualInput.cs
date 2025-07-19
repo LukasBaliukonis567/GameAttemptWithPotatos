@@ -83,15 +83,14 @@ public class MovementScript : MonoBehaviour
         }
 
         BadGuyLogic Opponent = other.GetComponent<BadGuyLogic>();
-        if(Opponent != null)
+        RangerLogic RangedOpponent = other.GetComponent<RangerLogic>();
+        ProjectileStats projectileStats = other.GetComponent<ProjectileStats>();
+
+        CharacterStatsScript playerStats = GetComponent<CharacterStatsScript>();
+        if (Opponent != null || RangedOpponent != null)
         {
-            CharacterStatsScript OpponenetStats = Opponent.GetComponent<CharacterStatsScript>();
-            CharacterStatsScript PlayerStats = GetComponent<CharacterStatsScript>();
-            OpponenetStats.TakeDamage(PlayerStats.damage); // Player deals damage
+            playerStats.TryDealContactDamage(other.gameObject);
         }
 
     }
-
-
-
 }
