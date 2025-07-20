@@ -8,6 +8,9 @@ public class MovementScript : MonoBehaviour
     private float pointsPickedUp = 0.0f;
     private int currentLevel = 0;
 
+    public GameObject LevelUpUI;
+
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -75,6 +78,7 @@ public class MovementScript : MonoBehaviour
             if (pointsPickedUp >= nextLevelXP)
             {
                 currentLevel++;
+                LevelUpUI.SetActive(false);
                 Debug.Log($"Level up! New level: {currentLevel}");
             }
 
