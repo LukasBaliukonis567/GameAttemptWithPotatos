@@ -15,6 +15,9 @@ public class SphereSpawner : MonoBehaviour
     public float MAX_BOUNDS_ALT = 2.0f; // Alternate maximum bounds for spawning spheres
     public float MIN_BOUNDS_ALT = -2.0f; // Alternate minimum bounds for spawning spheres
     private Vector2 _deathPosition = new Vector2(0, 0); // Position where the player dies
+    public bool bHpOrb = false;
+    public float amountHealed = 20.0f;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -82,12 +85,46 @@ public class SphereSpawner : MonoBehaviour
 
     public void BeginSpawning()
     {
+
+        if (SpherePrefab == null)
+        {
+            Debug.LogError($"{name}: SpherePrefab is NOT assigned!", this);
+        }
+        else
+        {
+            Debug.Log($"{name}: SphereSpawner starting. SpherePrefab = {SpherePrefab.name}", this);
+        }
+
         Rigidbody2D rigidbody2D = GetComponent<Rigidbody2D>();
         rigidbody2D.gravityScale = 0;
 
         if (SphereSpawnCount == 0)
-            StartCoroutine(SpawnSpheres());
+        {
+            StartCoroutine(SpawnAndDestroy()); // replaces SpawnSpheres
+        }
         else
+        {
             SpawnSpheresWithCount((int)SphereSpawnCount);
+            Destroy(gameObject); // clean up after use
+        }
+    }
+
+
+    public void SetIsHpOrb()
+    {
+        bHpOrb = true;
+        XPValue = 0.0f;
+    }
+
+    public bool GetIsHpOrb()
+    {
+        return bHpOrb;
+    }
+
+    private IEnumerator SpawnAndDestroy()
+    {
+        yield return new WaitForSeconds(SpawnInterval);
+        Instantiate(SpherePrefab, GetRandomPositionNearDeath(), Quaternion.identity);
+        Destroy(gameObject);
     }
 }

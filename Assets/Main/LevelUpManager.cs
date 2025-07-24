@@ -1,11 +1,17 @@
+using System.Linq;
 using UnityEngine;
 
 public class LevelUpManager : MonoBehaviour
 {
     public GameObject LevelUpUI;
     public CharacterStatsScript playerStats;
+    public static LevelUpManager Instance;
 
 
+    public void Awake()
+    {
+        Instance = this;
+    }
     public void IncreaseAttackDamage()
     {
         float currentDamage = playerStats.damage;
@@ -29,7 +35,7 @@ public class LevelUpManager : MonoBehaviour
         CloseUI();
     }
 
-    public void InreaseSpoeed()
+    public void IncreaseSpeed()
     {
         float currentSpeed = playerStats.speed;
 
@@ -72,4 +78,37 @@ public class LevelUpManager : MonoBehaviour
         Time.timeScale = 1f; // Resume game
 
     }
+
+    public string[] RollLevelUpOptions()
+    {
+        string[] allOptions = { "damage", "armor", "speed", "health", "attackSpeed" };
+        return allOptions.OrderBy(x => Random.value).Take(3).ToArray();
+    }
+
+    public void ApplyUpgrade(string upgrade)
+    {
+        switch (upgrade.ToLowerInvariant())
+        {
+            case "damage":
+                IncreaseAttackDamage();
+                break;
+            case "armor":
+                IncreaseArmor();
+                break;
+            case "speed":
+                IncreaseSpeed(); // Typo in method name! See below
+                break;
+            case "health":
+                IncreaseHealth();
+                break;
+            case "attackspeed":
+                IncreaseAttackSpeed();
+                break;
+            default:
+                Debug.LogWarning($"Unknown upgrade type: {upgrade}");
+                CloseUI(); // fallback just in case
+                break;
+        }
+    }
+
 }

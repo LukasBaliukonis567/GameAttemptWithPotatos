@@ -177,4 +177,8 @@ MonoBehaviour:
   XPValue: 10
   XPPerKill: 2
   XPSpawnerPrefab: {fileID: 5878694955998538277, guid: 351d9a0bc84bf8941aadb665ad7bb2d5, type: 3}
+  HealOrbSpawnerPrefab: {fileID: 7003262751723383260, guid: ed1b4d072f19d3c4baca5d23a1c906eb, type: 3}
+  AmountOfHealOrbs: 1
+  chanceToSpawn: 156
   bDropXPOnDeath: 1
+  bIsPlayer: 0
