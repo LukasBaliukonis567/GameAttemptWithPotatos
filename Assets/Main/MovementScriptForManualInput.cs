@@ -8,8 +8,7 @@ public class MovementScript : MonoBehaviour
     private float pointsPickedUp = 0.0f;
     private int currentLevel = 0;
 
-    public GameObject LevelUpUI;
-
+    public LevelUpUI LevelUpTrigger;
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -68,7 +67,7 @@ public class MovementScript : MonoBehaviour
     {
         Debug.Log("Overlapping with: " + other.gameObject.name);
         SphereSpawner sphere = other.GetComponent<SphereSpawner>();
-        if (sphere != null)
+        if (sphere != null && !sphere.GetIsHpOrb())
         {
             pointsPickedUp += sphere.XPValue;
             Debug.Log($"Trigger overlap! XP: {sphere.XPValue}");
@@ -77,13 +76,29 @@ public class MovementScript : MonoBehaviour
 
             if (pointsPickedUp >= nextLevelXP)
             {
+
+                if (LevelUpManager.Instance == null)
+                {
+                    Debug.LogError("Error: 205 \n big oopsie happened ");
+                    return;
+                }
+
                 currentLevel++;
-                LevelUpUI.SetActive(false);
+                var upgrades = LevelUpManager.Instance.RollLevelUpOptions();
+                LevelUpTrigger.ShowLevelUpScreen(upgrades);
+
                 Debug.Log($"Level up! New level: {currentLevel}");
             }
 
             Destroy(other.gameObject);
             Debug.Log($"Total points picked up: {pointsPickedUp}");
+        }
+        if (sphere != null && sphere.GetIsHpOrb())
+        {
+            CharacterStatsScript ps = GetComponent<CharacterStatsScript>();
+            ps.health += sphere.amountHealed;
+            Debug.Log($"Picked up health orb! Health increased by: {sphere.amountHealed}");
+            Destroy(other.gameObject);
         }
 
         BadGuyLogic Opponent = other.GetComponent<BadGuyLogic>();
@@ -93,7 +108,7 @@ public class MovementScript : MonoBehaviour
         CharacterStatsScript playerStats = GetComponent<CharacterStatsScript>();
         if (Opponent != null || RangedOpponent != null)
         {
-            playerStats.TryDealContactDamage(other.gameObject);
+            playerStats.TryDealContactDamage(other.gameObject); 
         }
 
     }

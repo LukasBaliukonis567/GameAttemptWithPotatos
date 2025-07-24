@@ -13,7 +13,11 @@ public class CharacterStatsScript : MonoBehaviour
     public float XPValue = 10.0f; // XP value for each sphere
     public float XPPerKill = 2.0f; // XP orb count per kill 
     public GameObject XPSpawnerPrefab; // assign this in the Inspector
+    public GameObject HealOrbSpawnerPrefab; // assign this in the Inspector
+    public int AmountOfHealOrbs = 1; // Number of heal orbs to spawn on death
+    public float chanceToSpawn = 1; // Chance to spawn heal orbs on death (1 in 158)
     public bool bDropXPOnDeath = true; // Whether to drop XP on death
+    public bool bIsPlayer = false;
 
 
 
@@ -24,43 +28,63 @@ public class CharacterStatsScript : MonoBehaviour
     {
         if (!bHasDied && isKillingBlow())
         {
-            bHasDied = true; // Prevent multiple death calls
+            bHasDied = true;
+
             if (bDropXPOnDeath && XPSpawnerPrefab != null)
             {
-                GameObject spawnerInstance = Instantiate(XPSpawnerPrefab, transform.position, Quaternion.identity);
-                SphereSpawner sphere = spawnerInstance.GetComponent<SphereSpawner>();
+                // XP orb
+                GameObject xpSpawnerInstance = Instantiate(XPSpawnerPrefab, transform.position, Quaternion.identity);
+                SphereSpawner xpSphere = xpSpawnerInstance.GetComponent<SphereSpawner>();
 
-                if (sphere != null)
+                if (xpSphere != null)
                 {
-                    sphere.SphereSpawnCount = XPPerKill;
-                    sphere.XPValue = XPValue;
-                    sphere.SetDeathPoisiton(transform.position);
-                    sphere.BeginSpawning(); // call your custom start logic
+                    xpSphere.SphereSpawnCount = XPPerKill;
+                    xpSphere.XPValue = XPValue;
+                    xpSphere.SetDeathPoisiton(transform.position);
+                    xpSphere.BeginSpawning();
+                }
+
+                float randomValue = Random.Range(1, chanceToSpawn);
+                if (randomValue == chanceToSpawn && HealOrbSpawnerPrefab != null)
+                {
+                    // HEAL orb — separate spawner
+                    GameObject healSpawnerInstance = Instantiate(HealOrbSpawnerPrefab, transform.position, Quaternion.identity);
+                    SphereSpawner healSphere = healSpawnerInstance.GetComponent<SphereSpawner>();
+
+                    if (healSphere != null)
+                    {
+                        healSphere.SphereSpawnCount = AmountOfHealOrbs;
+                        healSphere.amountHealed = 20.0f; // or set as needed
+                        healSphere.XPValue = 0.0f;
+                        healSphere.SetDeathPoisiton(transform.position);
+                        healSphere.SetIsHpOrb();
+                        healSphere.BeginSpawning();
+                    }
                 }
             }
-            Destroy(gameObject, 0.2f);
         }
     }
 
     public void TakeDamage(float damage)
     {
-        if (bPlayerIsInvulnerable)
+        if (bPlayerIsInvulnerable && bIsPlayer)
         {
             Debug.Log("Player is invulnerable, no damage taken.");
             return;
         }
 
         health -= damage;
-        Debug.Log($"Player took {damage} damage. Remaining health: {health}");
+        Debug.Log($"{(bIsPlayer ? "Player" : gameObject.name)} took {damage} damage. Remaining health: {health}");
 
         if (health <= 0.0f)
         {
-            // Killing blow — player dies
+            HandleDeath();
             return;
         }
 
-        // Start invulnerability
-        StartCoroutine(InvulnerabilityCooldown());
+        // Only players get invulnerability
+        if (bIsPlayer)
+            StartCoroutine(InvulnerabilityCooldown());
     }
 
     private System.Collections.IEnumerator InvulnerabilityCooldown()
@@ -85,5 +109,51 @@ public class CharacterStatsScript : MonoBehaviour
         // Deal damage to the other entity
         targetStats.TakeDamage(this.damage);
         Debug.Log($"{gameObject.name} dealt {damage} contact damage to {other.name}");
+    }
+
+    private void HandleDeath()
+    {
+        if (bHasDied) return;
+        bHasDied = true;
+
+        if (bIsPlayer)
+        {
+            Debug.Log("Player has died. Game Over or Respawn logic goes here.");
+            // TODO: Trigger game over UI, pause game, etc.
+            return;
+        }
+
+
+        Destroy(gameObject, 0.2f);
+
+        // ENEMY death logic
+        if (bDropXPOnDeath && XPSpawnerPrefab != null)
+        {
+            GameObject xpSpawnerGO = Instantiate(XPSpawnerPrefab, transform.position, Quaternion.identity);
+            SphereSpawner xpSpawner = xpSpawnerGO.GetComponent<SphereSpawner>();
+            if (xpSpawner != null)
+            {
+                xpSpawner.SphereSpawnCount = XPPerKill;
+                xpSpawner.XPValue = XPValue;
+                xpSpawner.SetDeathPoisiton(transform.position);
+                xpSpawner.BeginSpawning(); // Spawns and destroys itself
+            }
+
+            // HP ORBS — totally separate object
+            if (Random.Range(1, chanceToSpawn) == chanceToSpawn && HealOrbSpawnerPrefab != null)
+            {
+                GameObject healSpawnerGO = Instantiate(HealOrbSpawnerPrefab, transform.position, Quaternion.identity);
+                SphereSpawner healSpawner = healSpawnerGO.GetComponent<SphereSpawner>();
+                if (healSpawner != null)
+                {
+                    healSpawner.SphereSpawnCount = AmountOfHealOrbs;
+                    healSpawner.XPValue = 0.0f;
+                    healSpawner.SetIsHpOrb();
+                    healSpawner.SetDeathPoisiton(transform.position);
+                    healSpawner.BeginSpawning(); // no code gets run after this line 
+                }
+            }
+
+        }
     }
 }
