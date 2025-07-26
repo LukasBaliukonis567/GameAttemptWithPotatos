@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(ProjectileStats))]
 public class ProjectileLogic : MonoBehaviour
@@ -102,10 +102,11 @@ public class ProjectileLogic : MonoBehaviour
         // Splash damage
         if (stats.SplashRadius > 0f)
         {
-            Collider2D[] splashHits = Physics2D.OverlapCircleAll(transform.position, stats.SplashRadius, targetLayer);
+            Collider2D[] splashHits = Physics2D.OverlapCircleAll(transform.position, stats.SplashRadius);
             foreach (var hit in splashHits)
             {
                 if (hit.gameObject == owner || hit.gameObject == other.gameObject) continue;
+                if (!hit.CompareTag("Enemy")) continue;
 
                 var splashStats = hit.GetComponent<CharacterStatsScript>();
                 if (splashStats != null)
@@ -115,15 +116,7 @@ public class ProjectileLogic : MonoBehaviour
             }
         }
 
-        Destroy(gameObject);
+            Destroy(gameObject);
     }
 
-    private void OnDrawGizmosSelected()
-    {
-        if (stats != null && stats.SplashRadius > 0f)
-        {
-            Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position, stats.SplashRadius);
-        }
-    }
 }
