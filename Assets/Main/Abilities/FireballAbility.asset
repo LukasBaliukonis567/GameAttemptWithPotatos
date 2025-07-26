@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d6454be5024fda449aef715f1ae65c2a, type: 3}
+  m_Name: FireballAbility
+  m_EditorClassIdentifier: 
+  Name: Ability
+  Description: Fires a fire ball that explodes in an area of effect on impact and
+    deals fire damage to enemies hit
+  Cooldown: 2
+  Level: 1
+  Damage: 20
+  TravelSpeed: 10
+  ProjectilePrefab: {fileID: 2507831376553605791, guid: d910f32fe18f87143a840e1666a009d7, type: 3}
