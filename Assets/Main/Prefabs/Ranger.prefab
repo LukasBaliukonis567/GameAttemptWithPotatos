@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 3444085024609075430}
   - component: {fileID: 7351929073585850933}
   - component: {fileID: 4432089382371709097}
+  - component: {fileID: 9085488273302707673}
   m_Layer: 0
   m_Name: Ranger
   m_TagString: Enemy
@@ -153,7 +154,7 @@ MonoBehaviour:
   XPSpawnerPrefab: {fileID: 5878694955998538277, guid: 351d9a0bc84bf8941aadb665ad7bb2d5, type: 3}
   HealOrbSpawnerPrefab: {fileID: 7003262751723383260, guid: ed1b4d072f19d3c4baca5d23a1c906eb, type: 3}
   AmountOfHealOrbs: 1
-  chanceToSpawn: 68
+  chanceToSpawn: 156
   bDropXPOnDeath: 1
   bIsPlayer: 0
 --- !u!114 &7351929073585850933
@@ -200,6 +201,18 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 4
+--- !u!114 &9085488273302707673
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4495022913093368782}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f404d9b22011eb4b956f53a1ad94191, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &9153068874775952221
 PrefabInstance:
   m_ObjectHideFlags: 0
