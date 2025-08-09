@@ -22,5 +22,7 @@ MonoBehaviour:
   splashDamage: 10
   onHitEffects:
   - type: 0
+    owner: {fileID: 0}
+    target: {fileID: 0}
     duration: 5
-    magnitude: 1
+    magnitude: 45

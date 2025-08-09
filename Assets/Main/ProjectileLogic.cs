@@ -14,6 +14,7 @@ public class ProjectileLogic : MonoBehaviour
     private ProjectileStats stats;        // Cached reference to projectile stat component
     private Rigidbody2D rb;               // Cached Rigidbody2D
     private float lifetimeTimer = 0f;
+    private float tickInterval = 2.0f;
 
     private void Awake()
     {
@@ -94,7 +95,7 @@ public class ProjectileLogic : MonoBehaviour
             {
                 foreach (var effect in stats.Effects)
                 {
-                    effectReceiver.ApplyEffect(effect);
+                    effectReceiver.ApplyEffect(effect,targetStats, tickInterval);
                 }
             }
         }

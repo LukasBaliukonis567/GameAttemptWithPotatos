@@ -5,13 +5,8 @@ public class LevelUpManager : MonoBehaviour
 {
     public GameObject LevelUpUI;
     public CharacterStatsScript playerStats;
-    public static LevelUpManager Instance;
-
-
-    public void Awake()
-    {
-        Instance = this;
-    }
+    public static LevelUpManager Instance { get; private set; }
+    void Awake() => Instance = this;
     public void IncreaseAttackDamage()
     {
         float currentDamage = playerStats.damage;
@@ -51,7 +46,7 @@ public class LevelUpManager : MonoBehaviour
     {
         float currentAttackCooldown = playerStats.attackCooldown;
 
-        float increase = currentAttackCooldown * 0.1f;
+        float increase = currentAttackCooldown * 0.9f;
 
         float calculatedNewAttackSpeed = currentAttackCooldown + increase;
 
@@ -73,10 +68,7 @@ public class LevelUpManager : MonoBehaviour
 
     public void CloseUI()
     {
-
-        LevelUpUI.SetActive(false);
-        Time.timeScale = 1f; // Resume game
-
+        Time.timeScale = 1f;
     }
 
     public string[] RollLevelUpOptions()

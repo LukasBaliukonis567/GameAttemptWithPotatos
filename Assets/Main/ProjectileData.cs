@@ -27,8 +27,12 @@ public class ProjectileData : ScriptableObject
 public struct StatusEffect
 {
     public EffectType type;
+    public StatusEffectReceiver owner;
+    public CharacterStatsScript target; 
     [Min(0)] public float duration;   // How long it lasts on the target
     [Min(0)] public float magnitude;  // eg. damage per second, % slow, etc.
+    [Min(0)] public float tickTimer;
+    [Min(0)] public float time;
 }
 
 public enum EffectType { Burn, Slow, Poison, Stun, Freeze, Knockback }

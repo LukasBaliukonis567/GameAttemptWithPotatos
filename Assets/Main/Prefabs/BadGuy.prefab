@@ -13,6 +13,7 @@ GameObject:
   - component: {fileID: 1943658143074008890}
   - component: {fileID: 3276140049842625503}
   - component: {fileID: 5905105577331724887}
+  - component: {fileID: 5310971588856333137}
   m_Layer: 0
   m_Name: BadGuy
   m_TagString: Enemy
@@ -182,3 +183,15 @@ MonoBehaviour:
   chanceToSpawn: 156
   bDropXPOnDeath: 1
   bIsPlayer: 0
+--- !u!114 &5310971588856333137
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 807931922942517820}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6f404d9b22011eb4b956f53a1ad94191, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

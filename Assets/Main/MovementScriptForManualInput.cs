@@ -8,7 +8,8 @@ public class MovementScript : MonoBehaviour
     private float pointsPickedUp = 0.0f;
     private int currentLevel = 0;
 
-    public LevelUpUI LevelUpTrigger;
+    [SerializeField] private LevelUpUI LevelUpTrigger;
+
 
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -84,9 +85,8 @@ public class MovementScript : MonoBehaviour
                 }
 
                 currentLevel++;
-                var upgrades = LevelUpManager.Instance.RollLevelUpOptions();
-                LevelUpTrigger.ShowLevelUpScreen(upgrades);
-
+                var options = LevelUpManager.Instance.RollLevelUpOptions();
+                LevelUpTrigger.ShowLevelUpScreen(options);
                 Debug.Log($"Level up! New level: {currentLevel}");
             }
 
