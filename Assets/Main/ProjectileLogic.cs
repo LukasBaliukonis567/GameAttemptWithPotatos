@@ -95,7 +95,7 @@ public class ProjectileLogic : MonoBehaviour
             {
                 foreach (var effect in stats.Effects)
                 {
-                    effectReceiver.ApplyEffect(effect,targetStats, tickInterval);
+                    effectReceiver.ApplyEffect(effect);
                 }
             }
         }

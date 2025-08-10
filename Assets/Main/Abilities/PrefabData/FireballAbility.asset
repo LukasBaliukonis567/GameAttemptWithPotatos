@@ -12,11 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d6454be5024fda449aef715f1ae65c2a, type: 3}
   m_Name: FireballAbility
   m_EditorClassIdentifier: 
-  Name: Ability
+  Name: Fireball
   Description: Fires a fire ball that explodes in an area of effect on impact and
     deals fire damage to enemies hit
   Cooldown: 2
   Level: 1
   Damage: 20
   TravelSpeed: 10
+  ActivationRadius: 10
   ProjectilePrefab: {fileID: 2507831376553605791, guid: d910f32fe18f87143a840e1666a009d7, type: 3}

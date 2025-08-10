@@ -61,7 +61,7 @@ public class AbilityHandler : MonoBehaviour
         // TEMP: test fireball with space key
         if (Abilities.Count > 0 && Input.GetKeyDown(KeyCode.Space))
         {
-            TryUseAbility(Abilities[0]);
+            TryUseAbility(Abilities[1]);
         }
     }
 

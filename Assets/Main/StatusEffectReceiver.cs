@@ -1,74 +1,103 @@
 ﻿using UnityEngine;
 using System.Collections.Generic;
-using Mono.Cecil;
 
 public class StatusEffectReceiver : MonoBehaviour
 {
-    private readonly List<ActiveEffect> active = new();
+    [Header("Damage-over-time")]
+    [Tooltip("How often DoT effects (Burn/Poison) apply damage.")]
+    [Min(0.05f)] public float dotTickInterval = 1.0f; // seconds
 
-    public void ApplyEffect(StatusEffect eff, CharacterStatsScript targetStats, float tickInterval)
+    private readonly List<ActiveEffect> _active = new();
+    private CharacterStatsScript _stats; // cached
+
+    private void Awake()
     {
-        active.Add(new ActiveEffect(eff.owner, targetStats, eff.type, eff.duration, eff.magnitude, tickInterval));
-        // Do immediate response (slow speed, start DoT, etc.)
-        Debug.Log($"{name} got {eff.type} for {eff.duration}s");
+        _stats = GetComponent<CharacterStatsScript>();
+        if (!_stats)
+            Debug.LogWarning($"{name}: StatusEffectReceiver has no CharacterStatsScript on the same object.");
+    }
+
+    public void ApplyEffect(StatusEffect eff)
+    {
+        if (eff.duration <= 0f) return;
+
+        _active.Add(new ActiveEffect(
+            receiver: this,
+            type: eff.type,
+            duration: eff.duration,
+            magnitude: eff.magnitude,
+            tickInterval: dotTickInterval));
+
+        Debug.Log($"{name} got {eff.type} for {eff.duration:0.##}s");
     }
 
     private void Update()
     {
-        for (int i = active.Count - 1; i >= 0; --i)
+        for (int i = _active.Count - 1; i >= 0; --i)
         {
-            if (active[i].Tick(Time.deltaTime))
-                active.RemoveAt(i);
+            if (_active[i].Tick(Time.deltaTime))
+                _active.RemoveAt(i);
         }
     }
 
     private class ActiveEffect
     {
-        private readonly EffectType type;
-        private readonly StatusEffectReceiver owner;
-        private readonly CharacterStatsScript target;
-        private float remaining;
-        private readonly float mag;
-        private float tickTimer;
+        private readonly EffectType _type;
+        private readonly StatusEffectReceiver _receiver;
+        private readonly float _magnitude;     // For DoT: damage per tick; for Slow: % or factor you decide
+        private readonly float _tickInterval;  // seconds between DoT ticks
+        private float _remaining;
+        private float _tickTimer;
 
-        public ActiveEffect(StatusEffectReceiver owner, CharacterStatsScript target, EffectType t, float d, float m, float tickInterval)
+        public ActiveEffect(StatusEffectReceiver receiver, EffectType type, float duration, float magnitude, float tickInterval)
         {
-            this.owner = owner;
-            this.target = target;
-            type = t;
-            remaining = d;
-            mag = m;
-            this.tickTimer = tickInterval; // apply immediately on first frame
+            _receiver = receiver;
+            _type = type;
+            _remaining = duration;
+            _magnitude = magnitude;
+            _tickInterval = Mathf.Max(0.05f, tickInterval);
+            _tickTimer = 0f;
+
+            // TODO: If you have immediate on-apply logic (e.g., set a slow flag), do it here.
+            // Example: if (_type == EffectType.Slow) receiver.SetSlowFactor(_magnitude);
         }
 
+        /// <returns>true if the effect is finished and should be removed</returns>
         public bool Tick(float dt)
         {
-            remaining -= dt;
-            if (remaining <= 0f)
+            _remaining -= dt;
+            _tickTimer += dt;
+
+            switch (_type)
             {
-                // End‑effect cleanup here.
-                return true; // remove
-            }
-            tickTimer -= dt;
+                case EffectType.Burn:
+                case EffectType.Poison:
+                    // Apply damage in discrete ticks
+                    while (_tickTimer >= _tickInterval)
+                    {
+                        _tickTimer -= _tickInterval;
+                        if (_receiver._stats != null)
+                            _receiver._stats.TakeDamage(_magnitude);
+                    }
+                    break;
 
-            // Continuous effect example
-            if (tickTimer <= 0.0f)
+                case EffectType.Slow:
+                    // If you implement slow multipliers, keep them active while _remaining > 0
+                    break;
+
+                case EffectType.Stun:
+                case EffectType.Freeze:
+                case EffectType.Knockback:
+                    // Implement as needed
+                    break;
+            }
+
+            if (_remaining <= 0f)
             {
-                switch (type)
-                {
-                    case EffectType.Burn:
-                    case EffectType.Poison:
-                        // Damage‑over‑time
-                        if (target != null)
-                            target.TakeDamage(mag);
 
-                        break;
-
-                    case EffectType.Slow:
-                        // Your movement component could read a “slowFactor” held here
-                        break;
-                }
+                return true;
             }
+
             return false;
         }
     }
