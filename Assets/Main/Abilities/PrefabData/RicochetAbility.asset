@@ -17,10 +17,10 @@ MonoBehaviour:
   Cooldown: 2
   Level: 1
   Damage: 1000
-  TravelSpeed: 10
+  TravelSpeed: 100
   ActivationRadius: 10
   ProjectilePrefab: {fileID: 8493904426998220211, guid: dfe1a512a1c62a342a5822e729b87bcc, type: 3}
-  MaxBounces: 40
+  MaxBounces: 50
   AcquireRadius: 1000
   BounceOnlyOnKill: 1
   TargetMask:
