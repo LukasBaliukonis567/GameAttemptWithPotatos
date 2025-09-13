@@ -30,6 +30,14 @@ public class RangerLogic : MonoBehaviour
     {
         if (!seekEnabled || target == null) return;
 
+        // Always face the player
+        Vector2 dir = (target.position - transform.position);
+        if (dir.sqrMagnitude > 0.001f)
+        {
+            float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90f;
+            transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
+        }
+
         float sqrDist = (target.position - transform.position).sqrMagnitude;
         float sqrAttackRange = _stats.attackRange * _stats.attackRange;
 
@@ -44,21 +52,16 @@ public class RangerLogic : MonoBehaviour
         }
     }
 
-    /// <summary>Moves ranger toward the player at ranger speed, facing its target.</summary>
     private void MoveTowardsTarget()
     {
         Vector2 dir = (target.position - transform.position);
         if (dir.sqrMagnitude < 0.001f) return; // avoid jitter when too close
 
         dir.Normalize();
-        float angle = Mathf.Atan2(dir.y, dir.x) * Mathf.Rad2Deg - 90f;
-        transform.rotation = Quaternion.AngleAxis(angle, Vector3.forward);
-
         Vector2 newPos = _rb.position + dir * _stats.speed * Time.deltaTime;
         _rb.MovePosition(newPos);
     }
 
-    /// <summary>Runs exactly once per frame while the ranger is in range.</summary>
     private void HandleInRange()
     {
         if (Time.time < lastShotTime + fireCooldown) return; // wait for cooldown

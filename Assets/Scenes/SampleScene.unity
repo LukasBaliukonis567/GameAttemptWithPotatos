@@ -182,6 +182,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   LevelUpTrigger: {fileID: 2090202751}
+  speedText: {fileID: 0}
 --- !u!212 &156218544
 SpriteRenderer:
   m_ObjectHideFlags: 0
