@@ -1,14 +1,17 @@
 using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 
 public class MovementScript : MonoBehaviour
 {
     public const float diagononalSpeed = 3.5f;
     private float pointsPickedUp = 0.0f;
     private int currentLevel = 0;
+    private Vector2 lastPosition;
 
     [SerializeField] private LevelUpUI LevelUpTrigger;
+    [SerializeField] private TextMeshProUGUI speedText;
 
 
 
@@ -17,6 +20,8 @@ public class MovementScript : MonoBehaviour
     {
         Rigidbody2D rigidbody2D = GetComponent<Rigidbody2D>();
         rigidbody2D.gravityScale = 0;
+
+        lastPosition = rigidbody2D.position;
 
         if (LevelUpTrigger != null)
         {
@@ -27,45 +32,90 @@ public class MovementScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+
         Rigidbody2D rigidbody2D = GetComponent<Rigidbody2D>();
+
+        // Calculate speed based on position delta
+        float currentSpeed = ((rigidbody2D.position - lastPosition) / Time.deltaTime).magnitude;
+        lastPosition = rigidbody2D.position;
+
+        if (speedText != null)
+        {
+            speedText.text = $"Speed: {currentSpeed:F2}";
+        }
+        // Old movement logic
+        //if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D))
+        //{
+        //    Vector2 dir = (Vector2.up + Vector2.right).normalized;
+        //    rigidbody2D.position += dir * Time.deltaTime * diagononalSpeed;
+        //}
+        //else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A))
+        //{
+        //    Vector2 dir = (Vector2.up + Vector2.left).normalized;
+        //    rigidbody2D.position += dir * Time.deltaTime * diagononalSpeed;
+        //}
+        //else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D))
+        //{
+        //    Vector2 dir = (Vector2.down + Vector2.right).normalized;
+        //    rigidbody2D.position += dir * Time.deltaTime * diagononalSpeed;
+        //}
+        //else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A))
+        //{
+        //    Vector2 dir = (Vector2.down + Vector2.left).normalized;
+        //    rigidbody2D.position += dir * Time.deltaTime * diagononalSpeed;
+        //}
+
+
+        Vector2 moveDir = Vector2.zero;
+        if (Input.GetKey(KeyCode.W)) moveDir += Vector2.up;
+        if (Input.GetKey(KeyCode.S)) moveDir += Vector2.down;
+        if (Input.GetKey(KeyCode.A)) moveDir += Vector2.left;
+        if (Input.GetKey(KeyCode.D)) moveDir += Vector2.right;
+
         BoxCollider2D boxCollider2D = GetComponent<BoxCollider2D>();
         CharacterStatsScript PlayerStats = GetComponent<CharacterStatsScript>();
 
-
-
-        if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D))
+        if (moveDir != Vector2.zero)
         {
-            rigidbody2D.position += (Vector2.up + Vector2.right) * Time.deltaTime * diagononalSpeed;
-        }
-        else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A))
-        {
-            rigidbody2D.position += (Vector2.up + Vector2.left) * Time.deltaTime * diagononalSpeed;
-        }
-        else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D))
-        {
-            rigidbody2D.position += (Vector2.down + Vector2.right) * Time.deltaTime * diagononalSpeed;
-        }
-        else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A))
-        {
-            rigidbody2D.position += (Vector2.down + Vector2.left) * Time.deltaTime * diagononalSpeed;
+            moveDir = moveDir.normalized;
+            rigidbody2D.position += moveDir * Time.deltaTime * PlayerStats.speed;
         }
 
-        if (Input.GetKey(KeyCode.W))
-        {
-            rigidbody2D.position += Vector2.up * Time.deltaTime * PlayerStats.speed;
-        }
-        else if (Input.GetKey(KeyCode.S))
-        {
-            rigidbody2D.position += Vector2.down * Time.deltaTime * PlayerStats.speed;
-        }
-        else if (Input.GetKey(KeyCode.A))
-        {
-            rigidbody2D.position += Vector2.left * Time.deltaTime * PlayerStats.speed;
-        }
-        else if (Input.GetKey(KeyCode.D))
-        {
-            rigidbody2D.position += Vector2.right * Time.deltaTime * PlayerStats.speed;
-        }
+
+
+        //if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.D))
+        //{
+        //    rigidbody2D.position += (Vector2.up + Vector2.right) * Time.deltaTime * diagononalSpeed;
+        //}
+        //else if (Input.GetKey(KeyCode.W) && Input.GetKey(KeyCode.A))
+        //{
+        //    rigidbody2D.position += (Vector2.up + Vector2.left) * Time.deltaTime * diagononalSpeed;
+        //}
+        //else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.D))
+        //{
+        //    rigidbody2D.position += (Vector2.down + Vector2.right) * Time.deltaTime * diagononalSpeed;
+        //}
+        //else if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.A))
+        //{
+        //    rigidbody2D.position += (Vector2.down + Vector2.left) * Time.deltaTime * diagononalSpeed;
+        //}
+
+        //if (Input.GetKey(KeyCode.W))
+        //{
+        //    rigidbody2D.position += Vector2.up * Time.deltaTime * PlayerStats.speed;
+        //}
+        //else if (Input.GetKey(KeyCode.S))
+        //{
+        //    rigidbody2D.position += Vector2.down * Time.deltaTime * PlayerStats.speed;
+        //}
+        //else if (Input.GetKey(KeyCode.A))
+        //{
+        //    rigidbody2D.position += Vector2.left * Time.deltaTime * PlayerStats.speed;
+        //}
+        //else if (Input.GetKey(KeyCode.D))
+        //{
+        //    rigidbody2D.position += Vector2.right * Time.deltaTime * PlayerStats.speed;
+        //}
 
     }
 
@@ -118,3 +168,4 @@ public class MovementScript : MonoBehaviour
 
     }
 }
+
