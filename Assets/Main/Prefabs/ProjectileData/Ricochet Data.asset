@@ -14,10 +14,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 10
   damage: 9999
-  lifetime: 999
+  lifetime: 15
   gravity: 0
   canPierce: 0
-  maxPierceTargets: 20
+  maxPierceTargets: 0
   splashRadius: 0
   splashDamage: 0
   onHitEffects: []

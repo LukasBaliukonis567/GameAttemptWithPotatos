@@ -17,6 +17,11 @@ public class MovementScript : MonoBehaviour
     {
         Rigidbody2D rigidbody2D = GetComponent<Rigidbody2D>();
         rigidbody2D.gravityScale = 0;
+
+        if (LevelUpTrigger != null)
+        {
+            LevelUpTrigger.gameObject.SetActive(false); // Ensure UI is hidden at start
+        }
     }
 
     // Update is called once per frame
